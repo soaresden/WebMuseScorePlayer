@@ -15,703 +15,858 @@
         :root {
             --primary: #2c3e50;
             --accent: #e74c3c;
-            --accent-light: #ecf0f1;
             --text: #2c3e50;
             --text-light: #7f8c8d;
             --border: #bdc3c7;
-            --bg: #ffffff;
-            --bg-alt: #f8f9fa;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
         }
 
         body {
-            font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
-            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f5f5;
             color: var(--text);
-            height: 100vh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         .container {
             display: flex;
+            flex-direction: row;
             height: 100vh;
-            gap: 0;
         }
 
-        /* SIDEBAR */
         .sidebar {
-            width: 320px;
+            width: 280px;
             background: var(--primary);
             color: white;
             display: flex;
             flex-direction: column;
-            border-right: 3px solid var(--accent);
+            box-shadow: 2px 0 8px rgba(0,0,0,0.15);
             overflow: hidden;
-            box-shadow: 4px 0 12px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .sidebar-header {
-            padding: 20px;
+            padding: 16px;
             border-bottom: 2px solid rgba(255,255,255,0.1);
         }
 
         .sidebar-title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .sidebar-title i {
             color: var(--accent);
-            font-size: 24px;
         }
 
-        .sidebar-subtitle {
+        .upload-controls {
+            padding: 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-small {
+            flex: 1;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .btn-small:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .search-box {
+            padding: 0 12px 8px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 12px;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .file-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 3px solid transparent;
+            transition: background 0.2s;
+        }
+
+        .file-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .file-item.active {
+            background: var(--accent);
+            border-left-color: white;
+        }
+
+        .file-item i {
             font-size: 12px;
             color: rgba(255,255,255,0.6);
-            font-weight: 500;
         }
 
-        .upload-zone {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .file-item.active i {
+            color: white;
         }
 
-        .drop-area {
-            border: 2px dashed var(--accent);
-            border-radius: 8px;
-            padding: 20px;
+        .file-item-name {
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .no-files {
+            padding: 20px 12px;
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(231, 76, 60, 0.05);
-        }
-
-        .drop-area:hover,
-        .drop-area.dragover {
-            background: rgba(231, 76, 60, 0.15);
-            border-color: #ff6b5b;
-        }
-
-        .drop-area i {
-            font-size: 32px;
-            color: var(--accent);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .drop-area-text {
-            font-size: 13px;
-            color: rgba(255,255,255,0.8);
-            line-height: 1.4;
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
         }
 
         #fileInput {
             display: none;
         }
 
-        /* FILE LIST */
-        .file-list-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0;
-        }
-
-        .file-list-header {
-            padding: 15px 20px;
-            font-size: 12px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            position: sticky;
-            top: 0;
-            background: rgba(44, 62, 80, 0.95);
-        }
-
-        .file-item {
-            padding: 12px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            user-select: none;
-        }
-
-        .file-item:hover {
-            background: rgba(231, 76, 60, 0.1);
-        }
-
-        .file-item.active {
-            background: var(--accent);
-            padding-left: 16px;
-            border-left: 4px solid white;
-        }
-
-        .file-item-icon {
-            font-size: 16px;
-            color: var(--accent);
-            flex-shrink: 0;
-            width: 20px;
-            text-align: center;
-        }
-
-        .file-item.active .file-item-icon {
-            color: white;
-        }
-
-        .file-item-name {
-            font-size: 13px;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-item.active .file-item-name {
-            color: white;
-        }
-
-        .no-files {
-            padding: 40px 20px;
-            text-align: center;
-            color: rgba(255,255,255,0.4);
-            font-size: 13px;
-        }
-
-        /* MAIN AREA */
         .main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: var(--bg);
+            background: white;
             overflow: hidden;
+            position: relative;
         }
 
-        .viewer-container {
+        .viewer {
             flex: 1;
+            overflow: auto;
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
             display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            background: var(--bg-alt);
+            align-items: flex-start;
+            justify-content: center;
+            padding: 10px;
+            padding-bottom: 70px;
         }
 
         .sheet-container {
-            flex: 1;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 100%;
             overflow: auto;
+            padding: 10px;
+            position: relative;
+        }
+
+
+        #sheetDiv {
+            width: 100%;
+            height: 100%;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 20px;
-            background: linear-gradient(45deg, rgba(236,240,241,0.5) 25%, transparent 25%, transparent 75%, rgba(236,240,241,0.5) 75%, rgba(236,240,241,0.5)),
-                        linear-gradient(45deg, rgba(236,240,241,0.5) 25%, transparent 25%, transparent 75%, rgba(236,240,241,0.5) 75%, rgba(236,240,241,0.5));
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            background-color: #ffffff;
         }
 
-        #osmdDiv {
-            max-width: 100%;
-            max-height: 100%;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            background: white;
-            border-radius: 4px;
-        }
-
-        /* PLAYER */
-        .player {
-            background: white;
-            border-top: 1px solid var(--border);
-            padding: 16px 20px;
+        .controls-bar {
+            position: absolute;
+            bottom: 0;
+            left: 280px;
+            right: 0;
+            height: 60px;
+            background: var(--primary);
+            color: white;
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-wrap: wrap;
+            padding: 0 15px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
         }
 
-        .player-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        button {
-            background: var(--primary);
+        .controls-bar button {
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
             font-weight: 600;
-            transition: all 0.2s ease;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            transition: opacity 0.2s;
         }
 
-        button:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+        .controls-bar button:hover {
+            opacity: 0.8;
         }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        button:disabled {
-            opacity: 0.5;
+        .controls-bar button:disabled {
+            opacity: 0.4;
             cursor: not-allowed;
-            transform: none;
+        }
+
+        .time-display {
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: right;
         }
 
         .progress-container {
             flex: 1;
-            min-width: 200px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .time {
-            font-size: 12px;
-            color: var(--text-light);
-            min-width: 40px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        input[type="range"] {
+        .progress-slider {
             flex: 1;
             height: 4px;
-            border-radius: 2px;
-            background: var(--border);
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255,255,255,0.2);
             outline: none;
-            -webkit-appearance: none;
-            appearance: none;
+            border-radius: 2px;
+            cursor: pointer;
         }
 
-        input[type="range"]::-webkit-slider-thumb {
+        .progress-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
+            width: 12px;
+            height: 12px;
             background: var(--accent);
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
+            border-radius: 50%;
         }
 
-        input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
+        .progress-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
             background: var(--accent);
             cursor: pointer;
+            border-radius: 50%;
             border: none;
-            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
         }
 
-        .info-text {
-            font-size: 13px;
-            color: var(--text-light);
-            font-style: italic;
-        }
-
-        /* EMPTY STATE */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: var(--text-light);
+        .empty-message {
             text-align: center;
-            padding: 40px;
-            gap: 16px;
+            color: var(--text-light);
+            padding: 40px 20px;
         }
 
-        .empty-state i {
-            font-size: 64px;
-            color: var(--border);
-            opacity: 0.5;
-        }
-
-        .empty-state p {
-            font-size: 14px;
-            max-width: 300px;
-            line-height: 1.6;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                border-right: none;
-                border-bottom: 3px solid var(--accent);
-                max-height: 180px;
-            }
-
-            .file-list-container {
-                display: none;
-            }
-
-            .main {
-                flex: 1;
-            }
-        }
-
-        /* SCROLL */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-light);
-        }
-
-        /* LOADING */
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
+        .spinner {
+            border: 4px solid rgba(44,62,80,0.1);
+            border-top: 4px solid var(--accent);
             border-radius: 50%;
+            width: 40px;
+            height: 40px;
             animation: spin 0.8s linear infinite;
+            margin: 20px auto;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* TOAST */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 14px 20px;
-            border-radius: 6px;
-            font-size: 13px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toast.error {
-            background: var(--accent);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- SIDEBAR -->
+        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">
                     <i class="fas fa-music"></i>
-                    WebMuseScore
+                    Partitions
                 </div>
-                <div class="sidebar-subtitle">Lecteur de partitions</div>
             </div>
 
-            <div class="upload-zone">
-                <div class="drop-area" id="dropArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <div class="drop-area-text">
-                        Drag & drop<br>
-                        .mxl ou .mscz
-                    </div>
-                </div>
-                <input type="file" id="fileInput" accept=".mxl,.mscz" multiple>
+            <div class="upload-controls">
+                <button class="btn-small" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-plus"></i> Ajouter
+                </button>
+                <button class="btn-small" onclick="clearFiles()">
+                    <i class="fas fa-trash"></i> Vider
+                </button>
             </div>
 
-            <div class="file-list-container">
-                <div class="file-list-header">Partitions</div>
-                <div id="fileList"></div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Rechercher..." onkeyup="filterFiles()">
+            </div>
+
+            <div class="file-list" id="fileList">
+                <div class="no-files">Aucune partition</div>
             </div>
         </div>
 
-        <!-- MAIN -->
+        <!-- Main viewer -->
         <div class="main">
-            <div class="viewer-container">
-                <div class="sheet-container" id="sheetContainer">
-                    <div class="empty-state">
-                        <i class="fas fa-music"></i>
-                        <p>Sélectionne ou glisse une partition<br>pour commencer</p>
-                    </div>
+            <div class="viewer" id="viewer">
+                <div class="sheet-container">
+                    <div id="sheetDiv"></div>
                 </div>
             </div>
 
-            <!-- PLAYER -->
-            <div class="player">
-                <div class="player-controls">
-                    <button id="playBtn" disabled>
-                        <i class="fas fa-play"></i> Play
-                    </button>
-                    <button id="stopBtn" disabled>
-                        <i class="fas fa-square"></i> Stop
-                    </button>
-                </div>
-
+            <!-- Controls bar -->
+            <div class="controls-bar">
+                <button id="playBtn" onclick="togglePlay()" disabled>
+                    <i class="fas fa-play"></i> Lire
+                </button>
+                <button id="stopBtn" onclick="stopPlayback()" disabled>
+                    <i class="fas fa-stop"></i> Stop
+                </button>
                 <div class="progress-container">
-                    <span class="time" id="currentTime">0:00</span>
-                    <input type="range" id="progressBar" min="0" max="100" value="0" disabled>
-                    <span class="time" id="duration">0:00</span>
+                    <input type="range" id="progressSlider" class="progress-slider" min="0" max="100" value="0" onchange="seekPlayback(this.value)" disabled>
                 </div>
-
-                <div class="info-text" id="infoText">Aucune partition chargée</div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- LIBS -->
+    <input type="file" id="fileInput" accept=".mxl" multiple onchange="handleFileSelect(event)">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://opensheetmusicdisplay.github.io/opensheetmusicdisplay/latest/opensheetmusicdisplay.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.7.1/build/opensheetmusicdisplay.min.js"></script>
 
     <script>
-        // State
-        let currentFile = null;
         let files = [];
+        let currentFileIndex = null;
         let osmd = null;
-        let synth = null;
-        let currentNotes = [];
         let isPlaying = false;
+        let currentTime = 0;
+        let totalDuration = 0;
+        let playbackStartTime = 0;
+        let audioCtx = null;
 
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            setupDragDrop();
-            setupEventListeners();
-            initSynth();
-        });
-
-        // Drag & Drop
-        function setupDragDrop() {
-            const dropArea = document.getElementById('dropArea');
-            const fileInput = document.getElementById('fileInput');
-
-            dropArea.addEventListener('click', () => fileInput.click());
-
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => {
-                    dropArea.classList.add('dragover');
-                }, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => {
-                    dropArea.classList.remove('dragover');
-                }, false);
-            });
-
-            dropArea.addEventListener('drop', handleDrop, false);
-            fileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-            });
-        }
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const droppedFiles = dt.files;
-            handleFiles(droppedFiles);
-        }
-
-        function handleFiles(fileList) {
-            Array.from(fileList).forEach(file => {
-                if (file.name.endsWith('.mxl') || file.name.endsWith('.mscz')) {
-                    files.push({
-                        name: file.name,
-                        file: file,
-                        size: file.size
-                    });
-                }
-            });
+        async function handleFileSelect(event) {
+            
+            
+            
+            const newFiles = Array.from(event.target.files);
+            
+            
+            files = [...files, ...newFiles];
+            
+            
             renderFileList();
-            if (files.length > 0 && !currentFile) {
-                selectFile(0);
+            
+            
+            if (files.length > 0) {
+                
+                loadFile(0);
             }
+            
+            event.target.value = '';
         }
 
-        // File List
         function renderFileList() {
             const fileList = document.getElementById('fileList');
-            fileList.innerHTML = '';
-
             if (files.length === 0) {
                 fileList.innerHTML = '<div class="no-files">Aucune partition</div>';
                 return;
             }
 
-            files.forEach((file, idx) => {
-                const item = document.createElement('div');
-                item.className = 'file-item' + (currentFile && currentFile.name === file.name ? ' active' : '');
-                item.innerHTML = `
-                    <div class="file-item-icon"><i class="fas fa-file-music"></i></div>
-                    <div class="file-item-name">${file.name}</div>
-                `;
-                item.addEventListener('click', () => selectFile(idx));
-                fileList.appendChild(item);
+            fileList.innerHTML = files.map((f, i) => `
+                <div class="file-item ${currentFileIndex === i ? 'active' : ''}" onclick="loadFile(${i})">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="file-item-name">${f.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterFiles() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.file-item');
+            items.forEach(item => {
+                const name = item.querySelector('.file-item-name').textContent.toLowerCase();
+                item.style.display = name.includes(query) ? '' : 'none';
             });
         }
 
-        function selectFile(idx) {
-            currentFile = files[idx];
+        function clearFiles() {
+            files = [];
+            currentFileIndex = null;
+            osmd = null;
+            document.getElementById('sheetDiv').innerHTML = '';
             renderFileList();
-            loadScore(currentFile.file);
         }
 
-        // Load Score
-        async function loadScore(file) {
-            const sheetContainer = document.getElementById('sheetContainer');
-            const infoText = document.getElementById('infoText');
-
-            sheetContainer.innerHTML = '<div style="color: #7f8c8d; padding: 20px;"><i class="fas fa-spinner loading"></i> Chargement...</div>';
-
+        async function loadFile(idx) {
             try {
-                const arrayBuffer = await file.arrayBuffer();
-                const zip = await JSZip.loadAsync(arrayBuffer);
+                console.log('loadFile() called with idx:', idx);
+                
+                currentFileIndex = idx;
+                renderFileList();
+                stopPlayback();
 
-                // Find rootfile
-                let rootfilePath = 'META-INF/container.xml';
-                if (zip.files[rootfilePath]) {
-                    const containerXml = await zip.file(rootfilePath).async('text');
+                const sheetDiv = document.getElementById('sheetDiv');
+                
+                
+                sheetDiv.innerHTML = '<div class="empty-message"><div class="spinner"></div>Chargement...</div>';
+                
+
+                const file = files[idx];
+                
+                
+
+                const buffer = await file.arrayBuffer();
+                
+
+                const zip = await JSZip.loadAsync(buffer);
+                
+
+                // Find XML
+                let xmlPath = 'META-INF/container.xml';
+                let scoreXml = null;
+
+                if (zip.files[xmlPath]) {
+                    
+                    const containerXml = await zip.file(xmlPath).async('text');
+                    console.log('Container XML (premiers 200 chars):', containerXml.substring(0, 200));
+                    
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(containerXml, 'text/xml');
-                    const rootfile = doc.querySelector('rootfile');
-                    if (rootfile) {
-                        rootfilePath = rootfile.getAttribute('full-path');
+                    const rf = doc.querySelector('rootfile');
+                    if (rf) {
+                        xmlPath = rf.getAttribute('full-path');
+                        
                     }
                 }
 
-                // Get score XML
-                const scoreXml = await zip.file(rootfilePath).async('text');
-
-                // Render with OpenSheetMusicDisplay
-                if (osmd) {
-                    osmd.clear();
+                if (zip.files[xmlPath]) {
+                    
+                    scoreXml = await zip.file(xmlPath).async('text');
+                    
+                    console.log('✓ Score XML reçu (premiers 300 chars):\n', scoreXml.substring(0, 300));
+                } else {
+                    throw new Error('Fichier XML non trouvé');
                 }
 
-                osmd = new OSMD.OpenSheetMusicDisplay('osmdDiv', {
+                // Clean XML
+                
+                
+
+                scoreXml = scoreXml
+                    .replace(/<\?xml[^?]*\?>/g, '')
+                    .replace(/<!DOCTYPE[^>]*>/g, '');
+
+                scoreXml = scoreXml
+                    .replace(/version="4\.0"/g, 'version="3.0"');
+
+                scoreXml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+                    '<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">\n' +
+                    scoreXml;
+
+                
+                
+                
+                
+                console.log('XML final (premiers 400 chars):\n', scoreXml.substring(0, 400));
+
+                // OSMD
+                
+                
+
+                osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay('sheetDiv', {
                     autoResize: true,
+                    autoBeam: false,
                     backend: 'svg'
                 });
+                
+                
 
+                console.log('osmd.load() en cours...');
                 await osmd.load(scoreXml);
+                
+                
+                console.log('osmd.render() en cours...');
+                const renderStart = Date.now();
                 osmd.render();
+                console.log('✓ OSMD rendu avec succès en', Date.now() - renderStart, 'ms');
+                
+                
+                // Redimension SVG
+                setTimeout(() => {
+                    
+                    const svg = document.querySelector('#sheetDiv svg');
+                    
+                    
+                    if (svg) {
+                        const width = svg.getAttribute('width') || 1000;
+                        const height = svg.getAttribute('height') || 1400;
+                        
+                        
+                        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+                        svg.style.width = '100%';
+                        svg.style.height = 'auto';
+                        svg.style.maxWidth = '100%';
+                        svg.style.display = 'block';
+                        svg.style.margin = '0 auto';
+                        
+                        
+                    } else {
+                        
+                    }
+                }, 200);
 
-                sheetContainer.innerHTML = '<div id="osmdDiv"></div>';
-                const osmdDiv = document.getElementById('osmdDiv');
-                osmdDiv.innerHTML = '';
-                osmdDiv.appendChild(osmd.container);
+                // Extract notes timing
+                extractNoteTiming();
+                
+                // Add click handler to notes
+                addNoteClickHandlers();
 
-                infoText.textContent = file.name;
-                document.getElementById('playBtn').disabled = false;
-                document.getElementById('stopBtn').disabled = false;
-                document.getElementById('progressBar').disabled = false;
+                
 
-            } catch (error) {
-                console.error('Erreur:', error);
-                sheetContainer.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erreur lors du chargement</p></div>`;
-                showToast('Erreur: ' + error.message, true);
+            } catch (err) {
+                console.error('!!! ERREUR DANS LOADFILE !!!');
+                console.error('Message:', err.message);
+                console.error('Stack:', err.stack);
+                console.error('Type:', err.constructor.name);
+                const sheetDiv = document.getElementById('sheetDiv');
+                if (sheetDiv) {
+                    sheetDiv.innerHTML = `<div class="empty-message">Erreur: ${err.message}</div>`;
+                }
             }
         }
 
-        // Audio
-        function initSynth() {
-            synth = new Tone.Synth({
-                oscillator: { type: 'sine' },
-                envelope: {
-                    attack: 0.005,
-                    decay: 0.1,
-                    sustain: 0.3,
-                    release: 1
+        function extractNoteTiming() {
+            if (!osmd || !osmd.sheet) {
+                
+                totalDuration = 120;
+                window.scoreNotes = [];
+                enablePlaybackUI();
+                return;
+            }
+
+            try {
+                const notes = [];
+                
+                
+                // Use cursor to iterate
+                const cursor = osmd.cursor;
+                cursor.resetIterator();
+                
+                const iterator = cursor.Iterator;
+                
+                
+                let currentTime = 0;
+                let eventCount = 0;
+                
+                while (!iterator.endReached) {
+                    const voices = iterator.CurrentVoiceEntries;
+                    const bpm = osmd.sheet.SourceMeasures[iterator.CurrentMeasureIndex]?.TempoInBPM || 85;
+                    const beatDuration = 60 / bpm;
+                    
+                    if (voices && voices.length > 0) {
+                        eventCount++;
+                        
+                        for (let v = 0; v < voices.length; v++) {
+                            const voice = voices[v];
+                            const entryDuration = voice.Duration?.realValue || 0.25;
+                            
+                            for (let n = 0; n < voice.notes.length; n++) {
+                                const note = voice.notes[n];
+                                if (note && !note.isRest()) {
+                                    const duration = entryDuration * 4 * beatDuration;
+                                    const freq = 440 * Math.pow(2, (note.halfTone + 12 - 69) / 12);
+                                    
+                                    notes.push({
+                                        halfTone: note.halfTone + 12,
+                                        duration: duration,
+                                        time: currentTime,
+                                        freq: freq
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    
+                    currentTime += (iterator.CurrentVoiceEntries[0]?.Duration?.realValue || 0.25) * 4 * 60 / 85;
+                    iterator.moveToNext();
                 }
-            }).toDestination();
+
+                totalDuration = Math.max(currentTime, 60);
+                window.scoreNotes = notes;
+                
+                
+                console.log('✓ Durée totale:', totalDuration.toFixed(2), 's');
+                if (notes.length > 0) {
+                    console.log('✓ Sample notes:', notes.slice(0, 3));
+                }
+                updateTimeDisplay();
+                enablePlaybackUI();
+                
+            } catch (err) {
+                console.error('Error in extractNoteTiming:', err.message);
+                
+                totalDuration = 60;
+                window.scoreNotes = [];
+                enablePlaybackUI();
+            }
         }
 
-        // Player Controls
-        function setupEventListeners() {
-            document.getElementById('playBtn').addEventListener('click', playScore);
-            document.getElementById('stopBtn').addEventListener('click', stopScore);
-            document.getElementById('progressBar').addEventListener('change', (e) => {
-                // Seek implementation if needed
+        function addNoteClickHandlers() {
+            const svg = document.querySelector('#sheetDiv svg');
+            if (!svg) return;
+            
+            // Find all note elements (circles in SVG)
+            const noteElements = svg.querySelectorAll('circle, ellipse');
+            
+            
+            noteElements.forEach((el, idx) => {
+                el.style.cursor = 'pointer';
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // Find closest note from our notes array
+                    if (window.scoreNotes && window.scoreNotes.length > 0) {
+                        const note = window.scoreNotes[idx % window.scoreNotes.length];
+                        if (note) {
+                            stopPlayback();
+                            currentTime = note.time;
+                            updateTimeDisplay();
+                            
+                            if (!audioCtx) {
+                                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                            }
+                            const gainNode = audioCtx.createGain();
+                            gainNode.connect(audioCtx.destination);
+                            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                            
+                            playNoteAudio(audioCtx, gainNode, note.freq, note.duration);
+                            
+                        }
+                    }
+                });
             });
         }
 
-        function playScore() {
+        function enablePlaybackUI() {
+            document.getElementById('playBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = false;
+            document.getElementById('progressSlider').disabled = false;
+            
+        }
+
+        function halfToneToFreq(ht) {
+            return 440 * Math.pow(2, (ht - 69) / 12);
+        }
+
+        async function togglePlay() {
+            if (isPlaying) {
+                pausePlayback();
+            } else {
+                await playback();
+            }
+        }
+
+        async function playback() {
             if (!osmd) return;
 
             isPlaying = true;
-            document.getElementById('playBtn').disabled = true;
-            document.getElementById('stopBtn').disabled = false;
+            playbackStartTime = currentTime;
+            document.getElementById('playBtn').innerHTML = '<i class="fas fa-pause"></i> Pause';
 
-            // Simple playback simulation
-            showToast('Lecture en cours...', false);
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const gainNode = audioCtx.createGain();
+            gainNode.connect(audioCtx.destination);
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+
+            console.log('▶ Playing', window.scoreNotes?.length, 'notes');
+
+            // Update slider every 50ms
+            const updateInterval = setInterval(() => {
+                if (!isPlaying) {
+                    clearInterval(updateInterval);
+                    return;
+                }
+                
+                currentTime += 0.05;
+                updateTimeDisplay();
+
+                if (currentTime >= totalDuration) {
+                    stopPlayback();
+                    clearInterval(updateInterval);
+                }
+            }, 50);
+
+            // Play all notes with setTimeout
+            if (window.scoreNotes && window.scoreNotes.length > 0) {
+                for (const note of window.scoreNotes) {
+                    if (!isPlaying) break;
+
+                    const delaySeconds = note.time - playbackStartTime;
+                    if (delaySeconds >= 0) {
+                        setTimeout(() => {
+                            if (isPlaying) {
+                                playNoteAudio(audioCtx, gainNode, note.freq, note.duration);
+                            }
+                        }, delaySeconds * 1000);
+                    }
+                }
+            }
         }
 
-        function stopScore() {
+
+        function playNoteAudio(audioCtx, gainNode, freq, duration) {
+            try {
+                const osc = audioCtx.createOscillator();
+                const env = audioCtx.createGain();
+
+                osc.connect(env);
+                env.connect(gainNode);
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                
+                // Simple ADSR
+                env.gain.setValueAtTime(0, audioCtx.currentTime);
+                env.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.01);
+                env.gain.exponentialRampToValueAtTime(0.1, audioCtx.currentTime + duration * 0.8);
+                env.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + duration);
+                
+                // Colorer la note en rouge et la dé-colorer après
+                highlightNoteByFreq(freq, duration);
+            } catch (err) {
+                console.error('Error:', err.message);
+            }
+        }
+
+        function highlightNoteByFreq(freq, duration) {
+            // Chercher la note correspondante dans OSMD et la colorer en rouge
+            try {
+                const cursor = osmd.cursor;
+                let found = false;
+
+                // Parcourir toutes les notes
+                cursor.resetIterator();
+                const iterator = cursor.Iterator;
+                
+                while (!iterator.endReached) {
+                    const voices = iterator.CurrentVoiceEntries;
+                    
+                    for (let v = 0; v < voices.length; v++) {
+                        const voice = voices[v];
+                        for (let n = 0; n < voice.notes.length; n++) {
+                            const note = voice.notes[n];
+                            if (note && !note.isRest()) {
+                                const notePitch = note.halfTone + 12;
+                                const noteFreq = 440 * Math.pow(2, (notePitch - 69) / 12);
+                                
+                                // Si la fréquence correspond (avec tolérance)
+                                if (Math.abs(noteFreq - freq) < 5) {
+                                    // Colorer en rouge
+                                    if (note.sourceNote) {
+                                        note.sourceNote.NoteheadColor = '#FF0000FF';
+                                        osmd.render();
+                                    }
+                                    found = true;
+                                    
+                                    // Dé-colorer après
+                                    setTimeout(() => {
+                                        if (note.sourceNote) {
+                                            note.sourceNote.NoteheadColor = undefined;
+                                            osmd.render();
+                                        }
+                                    }, duration * 1000);
+                                    
+                                    break;
+                                }
+                            }
+                        }
+                        if (found) break;
+                    }
+                    if (found) break;
+                    iterator.moveToNext();
+                }
+            } catch (err) {
+                console.error('Error highlighting note:', err);
+            }
+        }
+
+        function pausePlayback() {
             isPlaying = false;
-            Tone.Transport.stop();
-            synth.triggerRelease();
-            document.getElementById('playBtn').disabled = false;
-            document.getElementById('stopBtn').disabled = true;
-            showToast('Arrêté', false);
+            document.getElementById('playBtn').innerHTML = '<i class="fas fa-play"></i> Lire';
         }
 
-        // Toast
-        function showToast(message, isError = false) {
-            const toast = document.createElement('div');
-            toast.className = 'toast' + (isError ? ' error' : '');
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+        function stopPlayback() {
+            isPlaying = false;
+            currentTime = 0;
+            updateTimeDisplay();
+            document.getElementById('playBtn').innerHTML = '<i class="fas fa-play"></i> Lire';
         }
+
+        function seekPlayback(value) {
+            currentTime = (value / 100) * totalDuration;
+            updateTimeDisplay();
+        }
+
+        function updateTimeDisplay() {
+            const formatTime = (s) => {
+                const m = Math.floor(s / 60);
+                const sec = Math.floor(s % 60);
+                return `${m}:${sec.toString().padStart(2, '0')}`;
+            };
+
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+            document.getElementById('totalTime').textContent = formatTime(totalDuration);
+            document.getElementById('progressSlider').value = totalDuration > 0 ? (currentTime / totalDuration) * 100 : 0;
+        }
+
+        // Init
+        
+        console.log('Container:', document.querySelector('.container'));
+        console.log('Viewer:', document.getElementById('viewer'));
+        console.log('SheetDiv:', document.getElementById('sheetDiv'));
+        console.log('FileInput:', document.getElementById('fileInput'));
+        console.log('PlayBtn:', document.getElementById('playBtn'));
+        
+        renderFileList();
     </script>
 </body>
 </html>
